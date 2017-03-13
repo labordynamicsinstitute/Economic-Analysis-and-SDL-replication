@@ -1,0 +1,436 @@
+-------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\space\schmutte\Documents\research\repository\brookings-sdl-2015\BPEA-replication-archive\analysis\est_var
+> _fuzz_me.log
+  log type:  text
+ opened on:   5 Aug 2015, 13:31:20
+
+. 
+.     pause on
+
+.     set more off
+
+.     set linesize 200
+
+.     clear all
+
+.     #delimit ;
+delimiter now ;
+.     set matsize 10000;
+
+. /*COUNTY-SECTOR*/
+> use "./qcew_qwi_cty_sec_pri.dta";
+
+. keep if quarter==1 & year>=2007 & year <= 2012;
+(5138694 observations deleted)
+
+. egen fips_sec_cat = group(fips naics_sector);
+
+. xtset fips_sec_cat year;
+       panel variable:  fips_sec_cat (unbalanced)
+        time variable:  year, 2007 to 2012, but with gaps
+                delta:  1 unit
+
+. mixed ln_cv_emp ln_num_estab || fips_sec_cat: ln_num_estab, covariance(unstructured);
+
+Performing EM optimization: 
+
+Performing gradient-based optimization: 
+
+Iteration 0:   log likelihood = -318478.25  
+Iteration 1:   log likelihood = -318448.78  
+Iteration 2:   log likelihood = -318447.68  
+Iteration 3:   log likelihood = -318447.67  
+
+Computing standard errors:
+
+Mixed-effects ML regression                     Number of obs      =    228772
+Group variable: fips_sec_cat                    Number of groups   =     43998
+
+                                                Obs per group: min =         1
+                                                               avg =       5.2
+                                                               max =         6
+
+
+                                                Wald chi2(1)       =  11171.71
+Log likelihood = -318447.67                     Prob > chi2        =    0.0000
+
+------------------------------------------------------------------------------
+   ln_cv_emp |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ln_num_estab |  -.2953482   .0027943  -105.70   0.000    -.3008249   -.2898714
+       _cons |  -1.486276   .0106934  -138.99   0.000    -1.507235   -1.465317
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects Parameters  |   Estimate   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+fips_sec_cat: Unstructured   |
+               var(ln_num~b) |   .0178899   .0018648      .0145842     .021945
+                  var(_cons) |   .7396389   .0282918      .6862157    .7972213
+         cov(ln_num~b,_cons) |  -.0605662   .0074888      -.075244   -.0458885
+-----------------------------+------------------------------------------------
+               var(Residual) |   .6923072   .0022759      .6878608    .6967822
+------------------------------------------------------------------------------
+LR test vs. linear regression:       chi2(3) = 66877.87   Prob > chi2 = 0.0000
+
+Note: LR test is conservative and provided only for reference.
+
+. mixed ln_cv_payroll ln_num_estab || fips_sec_cat: ln_num_estab, covariance(unstructured);
+
+Performing EM optimization: 
+
+Performing gradient-based optimization: 
+
+Iteration 0:   log likelihood = -365101.86  
+Iteration 1:   log likelihood = -365042.15  
+Iteration 2:   log likelihood = -365039.32  
+Iteration 3:   log likelihood = -365039.26  
+Iteration 4:   log likelihood = -365039.26  
+
+Computing standard errors:
+
+Mixed-effects ML regression                     Number of obs      =    236909
+Group variable: fips_sec_cat                    Number of groups   =     44522
+
+                                                Obs per group: min =         1
+                                                               avg =       5.3
+                                                               max =         6
+
+
+                                                Wald chi2(1)       =   5304.57
+Log likelihood = -365039.26                     Prob > chi2        =    0.0000
+
+-------------------------------------------------------------------------------
+ln_cv_payroll |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+ ln_num_estab |  -.2211412   .0030363   -72.83   0.000    -.2270923   -.2151902
+        _cons |  -1.574751   .0120645  -130.53   0.000    -1.598397   -1.551105
+-------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects Parameters  |   Estimate   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+fips_sec_cat: Unstructured   |
+               var(ln_num~b) |   .0200265   .0022749      .0160292    .0250205
+                  var(_cons) |   1.187212   .0372205      1.116458    1.262451
+         cov(ln_num~b,_cons) |  -.1028379   .0094903     -.1214385   -.0842373
+-----------------------------+------------------------------------------------
+               var(Residual) |   .9407584   .0030337      .9348312    .9467233
+------------------------------------------------------------------------------
+LR test vs. linear regression:       chi2(3) = 65458.85   Prob > chi2 = 0.0000
+
+Note: LR test is conservative and provided only for reference.
+
+. /*COUNTY*/
+> clear all;
+
+. use "./qcew_qwi_cty_pri.dta";
+
+. keep if quarter==1 & year>=2007 & year <= 2012;
+(298828 observations deleted)
+
+. egen fipscat=group(fips);
+
+. xtset fipscat year;
+       panel variable:  fipscat (unbalanced)
+        time variable:  year, 2007 to 2012
+                delta:  1 unit
+
+. mixed ln_cv_emp ln_num_estab || fipscat: ln_num_estab, covariance(unstructured);
+
+Performing EM optimization: 
+
+Performing gradient-based optimization: 
+
+Iteration 0:   log likelihood = -25667.557  
+Iteration 1:   log likelihood = -25657.832  
+Iteration 2:   log likelihood =     -25657  
+Iteration 3:   log likelihood = -25656.975  
+Iteration 4:   log likelihood = -25656.975  
+
+Computing standard errors:
+
+Mixed-effects ML regression                     Number of obs      =     18000
+Group variable: fipscat                         Number of groups   =      3019
+
+                                                Obs per group: min =         1
+                                                               avg =       6.0
+                                                               max =         6
+
+
+                                                Wald chi2(1)       =    315.44
+Log likelihood = -25656.975                     Prob > chi2        =    0.0000
+
+------------------------------------------------------------------------------
+   ln_cv_emp |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ln_num_estab |  -.2093571   .0117877   -17.76   0.000    -.2324606   -.1862536
+       _cons |  -2.037699   .0783178   -26.02   0.000    -2.191199   -1.884199
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects Parameters  |   Estimate   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+fipscat: Unstructured        |
+               var(ln_num~b) |   .0269589   .0084667      .0145672    .0498919
+                  var(_cons) |   2.012144   .3877555      1.379196    2.935567
+         cov(ln_num~b,_cons) |  -.1953432   .0578095     -.3086477   -.0820387
+-----------------------------+------------------------------------------------
+               var(Residual) |   .7431801   .0085888      .7265355     .760206
+------------------------------------------------------------------------------
+LR test vs. linear regression:       chi2(3) =  5970.91   Prob > chi2 = 0.0000
+
+Note: LR test is conservative and provided only for reference.
+
+. mixed ln_cv_payroll ln_num_estab || fipscat: ln_num_estab, covariance(unstructured);
+
+Performing EM optimization: 
+
+Performing gradient-based optimization: 
+
+Iteration 0:   log likelihood = -26341.411  
+Iteration 1:   log likelihood =  -26329.59  
+Iteration 2:   log likelihood = -26329.489  
+Iteration 3:   log likelihood = -26329.242  
+Iteration 4:   log likelihood = -26329.234  
+Iteration 5:   log likelihood = -26329.234  
+
+Computing standard errors:
+
+Mixed-effects ML regression                     Number of obs      =     18057
+Group variable: fipscat                         Number of groups   =      3019
+
+                                                Obs per group: min =         1
+                                                               avg =       6.0
+                                                               max =         6
+
+
+                                                Wald chi2(1)       =    186.45
+Log likelihood = -26329.234                     Prob > chi2        =    0.0000
+
+-------------------------------------------------------------------------------
+ln_cv_payroll |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+ ln_num_estab |  -.1623342   .0118885   -13.65   0.000    -.1856352   -.1390331
+        _cons |  -1.936291   .0796873   -24.30   0.000    -2.092475   -1.780106
+-------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects Parameters  |   Estimate   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+fipscat: Unstructured        |
+               var(ln_num~b) |   .0158594   .0084011      .0056154     .044791
+                  var(_cons) |    1.74449   .4021723      1.110283    2.740964
+         cov(ln_num~b,_cons) |  -.1315164   .0587899     -.2467425   -.0162903
+-----------------------------+------------------------------------------------
+               var(Residual) |   .7891462   .0091016      .7715076    .8071881
+------------------------------------------------------------------------------
+LR test vs. linear regression:       chi2(3) =  6250.42   Prob > chi2 = 0.0000
+
+Note: LR test is conservative and provided only for reference.
+
+. /*STATE*/
+> clear all;
+
+.     use "./qcew_qwi_state_pri.dta";
+
+. keep if quarter==1 & year>=2007 & year <= 2012;
+(4770 observations deleted)
+
+. egen statecat=group(state);
+
+. mixed ln_cv_emp ln_num_estab ||statecat: ln_num_estab, covariance(unstructured);
+
+Performing EM optimization: 
+
+Performing gradient-based optimization: 
+
+Iteration 0:   log likelihood = -367.84035  (not concave)
+Iteration 1:   log likelihood = -367.82615  (backed up)
+Iteration 2:   log likelihood = -367.81559  (not concave)
+Iteration 3:   log likelihood = -367.81491  (not concave)
+Iteration 4:   log likelihood = -367.81482  (not concave)
+Iteration 5:   log likelihood = -367.81448  (not concave)
+Iteration 6:   log likelihood = -367.81429  (not concave)
+Iteration 7:   log likelihood = -367.81424  (not concave)
+Iteration 8:   log likelihood = -367.81412  (not concave)
+Iteration 9:   log likelihood = -367.81395  (not concave)
+Iteration 10:  log likelihood =  -367.8139  (not concave)
+Iteration 11:  log likelihood = -367.81383  (not concave)
+Iteration 12:  log likelihood = -367.81378  (not concave)
+Iteration 13:  log likelihood = -367.81372  (not concave)
+Iteration 14:  log likelihood = -367.81364  (not concave)
+Iteration 15:  log likelihood = -367.81356  (not concave)
+Iteration 16:  log likelihood = -367.81247  
+Iteration 17:  log likelihood = -367.80455  
+Iteration 18:  log likelihood = -367.79984  
+Iteration 19:  log likelihood = -367.79983  
+
+Computing standard errors:
+
+Mixed-effects ML regression                     Number of obs      =       282
+Group variable: statecat                        Number of groups   =        47
+
+                                                Obs per group: min =         6
+                                                               avg =       6.0
+                                                               max =         6
+
+
+                                                Wald chi2(1)       =      2.64
+Log likelihood = -367.79983                     Prob > chi2        =    0.1039
+
+------------------------------------------------------------------------------
+   ln_cv_emp |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ln_num_estab |  -.2448861   .1505923    -1.63   0.104    -.5400415    .0502693
+       _cons |  -3.528899   1.726449    -2.04   0.041    -6.912677   -.1451204
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects Parameters  |   Estimate   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+statecat: Unstructured       |
+               var(ln_num~b) |   .0382153   .1597065      .0000106    137.8831
+                  var(_cons) |   4.476341   20.33624       .000608    32958.98
+         cov(ln_num~b,_cons) |  -.3810994   1.803822     -3.916526    3.154327
+-----------------------------+------------------------------------------------
+               var(Residual) |   .5436511   .0501768      .4536885    .6514525
+------------------------------------------------------------------------------
+LR test vs. linear regression:       chi2(3) =   147.45   Prob > chi2 = 0.0000
+
+Note: LR test is conservative and provided only for reference.
+
+. mixed ln_cv_payroll ln_num_estab ||statecat: ln_num_estab, covariance(unstructured);
+
+Performing EM optimization: 
+
+Performing gradient-based optimization: 
+
+Iteration 0:   log likelihood = -468.16124  
+Iteration 1:   log likelihood = -467.76127  (not concave)
+Iteration 2:   log likelihood = -467.68103  (not concave)
+Iteration 3:   log likelihood = -467.64067  (not concave)
+Iteration 4:   log likelihood = -467.63017  (not concave)
+Iteration 5:   log likelihood = -467.62472  (not concave)
+Iteration 6:   log likelihood = -467.58854  (not concave)
+Iteration 7:   log likelihood = -467.55397  (not concave)
+Iteration 8:   log likelihood = -467.54399  (not concave)
+Iteration 9:   log likelihood = -467.52923  (not concave)
+Iteration 10:  log likelihood = -467.52024  (not concave)
+Iteration 11:  log likelihood =  -467.5077  (not concave)
+Iteration 12:  log likelihood = -467.49946  (not concave)
+Iteration 13:  log likelihood =    -467.49  (not concave)
+Iteration 14:  log likelihood = -467.48124  (not concave)
+Iteration 15:  log likelihood = -467.46592  (not concave)
+Iteration 16:  log likelihood = -467.45251  (not concave)
+Iteration 17:  log likelihood = -467.41698  (not concave)
+Iteration 18:  log likelihood = -467.36585  (not concave)
+Iteration 19:  log likelihood = -467.35379  (not concave)
+Iteration 20:  log likelihood = -467.34301  (not concave)
+Iteration 21:  log likelihood = -467.33154  (not concave)
+Iteration 22:  log likelihood = -467.31191  (not concave)
+Iteration 23:  log likelihood = -467.26695  (not concave)
+Iteration 24:  log likelihood = -467.18561  (not concave)
+Iteration 25:  log likelihood = -467.16132  (not concave)
+Iteration 26:  log likelihood = -467.12237  (not concave)
+Iteration 27:  log likelihood = -467.08509  (not concave)
+Iteration 28:  log likelihood = -467.05831  (not concave)
+Iteration 29:  log likelihood =  -467.0442  (not concave)
+Iteration 30:  log likelihood = -467.02957  (not concave)
+Iteration 31:  log likelihood = -467.01516  (not concave)
+Iteration 32:  log likelihood = -467.00092  (not concave)
+Iteration 33:  log likelihood = -466.98643  (not concave)
+Iteration 34:  log likelihood = -466.97181  (not concave)
+Iteration 35:  log likelihood = -466.95714  (not concave)
+Iteration 36:  log likelihood = -466.94249  (not concave)
+Iteration 37:  log likelihood = -466.92771  (not concave)
+Iteration 38:  log likelihood =  -466.9129  (not concave)
+Iteration 39:  log likelihood = -466.89801  (not concave)
+Iteration 40:  log likelihood = -466.88312  (not concave)
+Iteration 41:  log likelihood = -466.86814  (not concave)
+Iteration 42:  log likelihood = -466.85317  (not concave)
+Iteration 43:  log likelihood = -466.83812  (not concave)
+Iteration 44:  log likelihood = -466.82308  (not concave)
+Iteration 45:  log likelihood = -466.80798  (not concave)
+Iteration 46:  log likelihood =  -466.7929  (not concave)
+Iteration 47:  log likelihood = -466.77775  (not concave)
+Iteration 48:  log likelihood = -466.76265  (not concave)
+Iteration 49:  log likelihood = -466.74748  (not concave)
+Iteration 50:  log likelihood = -466.73237  (not concave)
+Iteration 51:  log likelihood =  -466.7172  (not concave)
+Iteration 52:  log likelihood = -466.70208  (not concave)
+Iteration 53:  log likelihood = -466.68692  (not concave)
+Iteration 54:  log likelihood = -466.67183  (not concave)
+Iteration 55:  log likelihood = -466.65669  (not concave)
+Iteration 56:  log likelihood = -466.64163  (not concave)
+Iteration 57:  log likelihood = -466.62653  (not concave)
+Iteration 58:  log likelihood = -466.61151  (not concave)
+Iteration 59:  log likelihood = -466.59646  (not concave)
+Iteration 60:  log likelihood =  -466.5815  (not concave)
+Iteration 61:  log likelihood = -466.56651  (not concave)
+Iteration 62:  log likelihood = -466.55162  (not concave)
+Iteration 63:  log likelihood =  -466.5367  (not concave)
+Iteration 64:  log likelihood = -466.52189  (not concave)
+Iteration 65:  log likelihood = -466.50706  (not concave)
+Iteration 66:  log likelihood = -466.49233  (not concave)
+Iteration 67:  log likelihood =  -466.4776  (not concave)
+Iteration 68:  log likelihood = -466.46297  (not concave)
+Iteration 69:  log likelihood = -466.44834  (not concave)
+Iteration 70:  log likelihood = -466.43382  (not concave)
+Iteration 71:  log likelihood = -466.41929  (not concave)
+Iteration 72:  log likelihood = -466.40489  (not concave)
+Iteration 73:  log likelihood = -466.39048  (not concave)
+Iteration 74:  log likelihood = -466.37621  (not concave)
+Iteration 75:  log likelihood = -466.36192  (not concave)
+Iteration 76:  log likelihood = -466.34777  (not concave)
+Iteration 77:  log likelihood = -466.33363  (not concave)
+Iteration 78:  log likelihood = -466.31961  (not concave)
+Iteration 79:  log likelihood =  -466.3056  (not concave)
+Iteration 80:  log likelihood = -466.29172  (not concave)
+Iteration 81:  log likelihood = -466.27786  
+Iteration 82:  log likelihood = -464.86125  
+Iteration 83:  log likelihood = -464.72504  
+Iteration 84:  log likelihood =  -464.7234  
+Iteration 85:  log likelihood =  -464.7234  
+
+Computing standard errors:
+
+Mixed-effects ML regression                     Number of obs      =       282
+Group variable: statecat                        Number of groups   =        47
+
+                                                Obs per group: min =         6
+                                                               avg =       6.0
+                                                               max =         6
+
+
+                                                Wald chi2(1)       =      1.97
+Log likelihood =  -464.7234                     Prob > chi2        =    0.1604
+
+-------------------------------------------------------------------------------
+ln_cv_payroll |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+ ln_num_estab |   .2696452    .192082     1.40   0.160    -.1068287     .646119
+        _cons |  -7.539257   2.211177    -3.41   0.001    -11.87308    -3.20543
+-------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects Parameters  |   Estimate   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+statecat: Unstructured       |
+               var(ln_num~b) |   .8263303   .4226965      .3032038    2.252022
+                  var(_cons) |   108.4796     54.195       40.7473    288.8001
+         cov(ln_num~b,_cons) |   -9.46122   4.789363      -18.8482   -.0742407
+-----------------------------+------------------------------------------------
+               var(Residual) |   1.252854   .1156098      1.045572    1.501228
+------------------------------------------------------------------------------
+LR test vs. linear regression:       chi2(3) =    65.93   Prob > chi2 = 0.0000
+
+Note: LR test is conservative and provided only for reference.
+
+. log close;
+      name:  <unnamed>
+       log:  H:\space\schmutte\Documents\research\repository\brookings-sdl-2015\BPEA-replication-archive\analysis\est_var_fuzz_me.log
+  log type:  text
+ closed on:   5 Aug 2015, 13:39:39
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
