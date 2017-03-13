@@ -1,5 +1,7 @@
 # Replication Archive for `Economic Analysis and Statistical Disclosure Limitation'' by Abowd and Schmutte (2015)
 
+[![DOI](https://zenodo.org/badge/84830246.svg)](https://zenodo.org/badge/latestdoi/84830246)
+
 2015-August-07
 
 This archive contains code to replicate the analysis in
