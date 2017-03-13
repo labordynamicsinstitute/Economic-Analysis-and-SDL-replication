@@ -15,4 +15,4 @@ Both programs call the same three data files:
 	qcew_qwi_state_pri.dta
 
 
-The code used to build the analysis data from raw input is included with this archive, under [../build/](../build/).
+The code used to build the analysis data from raw input is included with this archive, under [../build/](../build/). The actual analysis data as built for the paper  can be found at openICPSR (DOI: 10.3886/E100505V1). Replication data should be downloaded and stored in the ./analysis folder before executing programs.
